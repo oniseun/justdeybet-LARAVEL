@@ -5,5 +5,4 @@
 *.xml linguist-vendored
 *.json linguist-vendored
 public/* linguist-vendored
-config/* linguist-vendored
-tests/* linguist-vendored
+*.blade.php linguist-vendored
