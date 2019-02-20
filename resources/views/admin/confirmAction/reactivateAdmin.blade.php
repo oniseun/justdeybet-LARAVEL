@@ -1,4 +1,4 @@
-@extends('master.dialogs')
+ @extends('master.adminOneColumn')
 
 @section('title','Reactivate suspended admin')
 @section('content')

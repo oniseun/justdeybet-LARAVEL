@@ -35,6 +35,11 @@ class Games extends Model
 
     }
 
+    public static function update_score($game_id)
+    {
+        
+    }
+
     public static function remove_game($game_id)
     {
         $data = \Request::only(self::$removeGameFillable);

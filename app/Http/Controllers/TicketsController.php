@@ -22,16 +22,16 @@ class TicketsController extends Controller
         return view('admin.list.canceledTickets',compact('canceledTickets','ticketListCount'));
     }
 
-    public function cancelTicketConfirm($ticketID)
+    public function ConfirmCancelTicketForm($ticketID)
     {
-        $info = Tickets::info($ticketID);
-        return view('admin.confirmAction.cancelTicket', compact('info'));
+        $ticketInfo = Tickets::info($ticketID);
+        return view('admin.confirmAction.cancelTicket', compact('ticketInfo'));
 
     }
-    public function payOutTicketConfirm($ticketID)
+    public function confirmPayOutTicketForm($ticketID)
     {
-        $info = Tickets::info($ticketID);
-        return view('admin.confirmAction.payOutTicket', compact('info'));
+        $ticketInfo = Tickets::info($ticketID);
+        return view('admin.confirmAction.payOutTicket', compact('ticketInfo'));
 
     }
 

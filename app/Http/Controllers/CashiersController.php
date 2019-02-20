@@ -14,15 +14,6 @@ class CashiersController extends Controller
         return view('admin.dialogs.addCashier');
     }
 
-    public function manageList()
-    {
-
-        $siteInfo = Site::info();
-        $cashierList = Cashiers::_list();
-
-        return view('admin.list.manageCashiers', compact('siteInfo', 'cashierList'));
-    }
-
     public function confirmReactivationForm($id)
     {
 
@@ -37,6 +28,15 @@ class CashiersController extends Controller
         $cashierInfo = Cashiers::info($id);
 
         return view('admin.confirmAction.suspendCashier', compact('cashierInfo'));
+    }
+
+    public function manageList()
+    {
+
+        $siteInfo = Site::info();
+        $cashierList = Cashiers::_list();
+
+        return view('admin.list.manageCashiers', compact('siteInfo', 'cashierList'));
     }
 
     public function suspendedList()

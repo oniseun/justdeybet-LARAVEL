@@ -13,7 +13,7 @@
       <div class="panel  panel-info">
         <div class="panel-heading"><b>Available Games ({{ number_format($siteInfo->available_games_count) }})</b> </div>
         <div class="panel-body">
-          <form action="/admin/games/play" method="post">
+          <form action="/admin/play/game" method="post">
           @csrf 
             <table class="table data-table table-bordered">
                 
@@ -56,12 +56,12 @@
 
                                     @if(($currentUser->can_update_scores === 'yes' && $game_info->creator_id === $currentUser->ID)
                       || $currentUser->user_type == 'super_admin' )
-                                    <li><a href="/admin/games/update/scores/{{ $game_info->game_id }}">Update Scores</a></li>
+                                    <li><a href="/admin/update/game/score/{{ $game_info->game_id }}">Update Scores</a></li>
                                     @endif
 
                                     @if(($currentUser->can_remove_games === 'yes' && $game_info->creator_id === $currentUser->ID)
                       || $currentUser->user_type == 'super_admin' )
-                                    <li><a href="/admin/games/remove/{{ $game_info->game_id }}">Remove Game</a></li>
+                                    <li><a href="/admin/remove/game/{{ $game_info->game_id }}">Remove Game</a></li>
                                     @endif
 
                                   </ul>
@@ -101,8 +101,8 @@
                   <td><span class="label label-default">{{ $game_info->played_games }} tickets</span></td>
                   <td>
                   
-                    @if((($currentUser->can_remove_games === 'yes' || $currentUser->can_update_scores === 'yes') || $game_info->creator_id === $currentUser->ID)
-                      || $currentUser->user_type == 'super_admin'  )
+                    @if((($currentUser->can_remove_games === 'yes'   || $currentUser->can_update_scores === 'yes')
+                     || $game_info->creator_id === $currentUser->ID) || $currentUser->user_type == 'super_admin'  )
 
 
                           <!-- Single button -->
@@ -112,16 +112,16 @@
                                 </button>
                                   <ul class="dropdown-menu">
                                     
-                                      @if(($currentUser->can_update_scores === 'yes' && $game_info->creator_id === $currentUser->ID)
-                      || $currentUser->user_type == 'super_admin' )
+                                      @if(($currentUser->can_update_scores === 'yes'   && $game_info->creator_id === $currentUser->ID)
+                                    || $currentUser->user_type == 'super_admin' )
 
-                                    <li><a href="/admin/games/update/scores/{{ $game_info->game_id }}">Re-Update Scores</a></li>
+                                    <li><a href="/admin/update/game/score/{{ $game_info->game_id }}">Re-Update Scores</a></li>
                                     @endif
 
-                                      @if(($currentUser->can_remove_games === 'yes' && $game_info->creator_id === $currentUser->ID)
-                      || $currentUser->user_type == 'super_admin' )
+                                      @if(($currentUser->can_remove_games === 'yes'  && $game_info->creator_id === $currentUser->ID)
+                                          || $currentUser->user_type == 'super_admin' )
 
-                                    <li><a href="/admin/games/remove/{{ $game_info->game_id }}">Remove Game</a></li>
+                                    <li><a href="/admin/remove/game/{{ $game_info->game_id }}">Remove Game</a></li>
                                     @endif
                                     
                                   </ul>

@@ -1,4 +1,4 @@
-@extends('master.dialogs')
+ @extends('master.adminOneColumn')
 
 @section('title')
 Suspend Admin : {{ $adminInfo->display_name }} 

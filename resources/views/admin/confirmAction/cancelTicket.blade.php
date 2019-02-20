@@ -1,5 +1,5 @@
  
- @extends('master.dialogs')
+ @extends('master.adminOneColumn')
 
 @section('title','Confirm Cancel ticket ')
 @section('content')
@@ -15,20 +15,20 @@
                   <!-- form -->
                   <form class="text-center" action="/admin/finalize/cancel/ticket" method="post">
                     @csrf
-                    <input type="hidden" name="ticket_id" value="{{ $info->ticket_id }}"/>
+                    <input type="hidden" name="ticket_id" value="{{ $ticketInfo->ticket_id }}"/>
                     <p>
-                      <h1><b> {{ $info->ticket_id }} </b></h1><hr/>
+                      <h1><b> {{ $ticketInfo->ticket_id }} </b></h1><hr/>
                        Are you sure you want to cancel this ticket and forfeit any feasible earnings or information attached to it? This action cannot be undone.  ?
                     </p>
 
 
                      <p><br/>
-                       <a class="btn btn-default " href="manage-tickets.php" role="button">
+                       <a class="btn btn-default " href="/admin/tickets/list" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to tickets
                      </a>
                          <button class="btn btn-primary ajax-submit" role="button">Cancel Ticket</button>
 
-                         <a class="btn btn-info " href="/admin/ticket/{{ $info->ticket_id }}" role="button">
+                         <a class="btn btn-info " href="/admin/ticket/{{ $ticketInfo->ticket_id }}" role="button">
                           View Ticket Info
                          </a>
                    </p>

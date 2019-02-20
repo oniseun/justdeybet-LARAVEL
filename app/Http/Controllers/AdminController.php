@@ -14,18 +14,6 @@ class AdminController extends Controller
         return view('admin.dialogs.addAdmin');
     }
 
- 
-
-    public function manageList()
-    {
-
-        $siteInfo = Site::info();
-        $adminList = Admin::_list();
-
-        return view('admin.list.manageAdmins',compact('siteInfo','adminList'));
-    }
-
-    
     public function confirmReactivationForm($id)
     {
 
@@ -41,6 +29,17 @@ class AdminController extends Controller
 
         return view('admin.confirmAction.suspendAdmin', compact('adminInfo'));
     }
+
+
+    public function manageList()
+    {
+
+        $siteInfo = Site::info();
+        $adminList = Admin::_list();
+
+        return view('admin.list.manageAdmins',compact('siteInfo','adminList'));
+    }
+   
 
     public function suspendedList()
     {

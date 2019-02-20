@@ -1,8 +1,7 @@
-@extends('master.dialogs')
+@extends('master.adminOneColumn')
 @section('title','Ticket Info ')
 @section('content')
 
-@include('components.header')
 <div class="row">
     <br/>
           <!-- content column -->

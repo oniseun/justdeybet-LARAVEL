@@ -1,4 +1,4 @@
-@extends('master.dialogs')
+ @extends('master.adminOneColumn')
 
 @section('title')
 Remove Game : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }} 
@@ -16,7 +16,7 @@ Remove Game : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
 
                   <form class="text-center"  action="admin/finalize/remove/game" method="post">
                     @csrf
-                    <input type="hidden" name="game_id" value="{{ $gameInfo->game_id }}/>
+                    <input type="hidden" name="game_id" value="{{ $gameInfo->game_id }}"/>
                     <p>
                       <h3><b> {{ $gameInfo->home_team }} </b> vs <b> {{ $gameInfo->away_team }} </b></h3><hr/>
                        If you remove this game , all related/linked information chain including tickets ,

@@ -1,4 +1,4 @@
-@extends('master.dialogs')
+ @extends('master.adminOneColumn')
 
 @section('title')
 Suspend Cashier : {{ $cashierInfo->display_name }} 
