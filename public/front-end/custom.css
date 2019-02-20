@@ -1,0 +1,43 @@
+
+/*
+ * Footer
+ */
+
+.blog-footer {
+  padding: 40px 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e5e5e5;
+}
+.blog-footer p:last-child {
+  margin-bottom: 0;
+}
+
+  .data-table > tbody > tr > td, .data-table > tbody > tr > th{
+     vertical-align: middle;font-size:14px;
+}
+
+
+.loading-spiner {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #666; /* Black */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    display: block;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); -webkit-transform: rotate(0deg);}
+    100% { transform: rotate(360deg);-webkit-transform: rotate(360deg); }
+}
+
+.text-bold
+{
+  font-weight: bold;
+}
