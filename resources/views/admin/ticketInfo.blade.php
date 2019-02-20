@@ -109,7 +109,7 @@
                 <div class="panel-heading">Games played ({{ $ticketInfo->games_played }}) </div>
                 <table class="table data-table table-bordered">
                 
-                @foreach($ticketGames as $game_info):
+                @foreach($ticketGames as $game_info)
 
                 <?php
                   $label = 'danger';

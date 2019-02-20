@@ -23,7 +23,7 @@ class CashiersController extends Controller
         return view('admin.list.manageCashiers', compact('siteInfo', 'cashierList'));
     }
 
-    public function reactivateCashier($id)
+    public function confirmReactivationForm($id)
     {
 
         $cashierInfo = Cashiers::info($id);
@@ -31,12 +31,12 @@ class CashiersController extends Controller
         return view('admin.confirmAction.reactivateCashier', compact('cashierInfo'));
     }
 
-    public function suspendCashier($id)
+    public function confirmSuspensionForm($id)
     {
 
         $cashierInfo = Cashiers::info($id);
 
-        return view('admin.confirmAction.suspendcashier', compact('cashierInfo'));
+        return view('admin.confirmAction.suspendCashier', compact('cashierInfo'));
     }
 
     public function suspendedList()

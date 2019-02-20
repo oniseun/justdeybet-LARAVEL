@@ -75,6 +75,7 @@
                                             @if($cashierInfo->suspended === 'yes')
 
                                             <li><a href="/admin/reactivate/cashier/{{ $cashierInfo->ID }}">Reactivate {{ $cashierInfo->display_name }}</a></li>
+                                            @else
                                             <li><a href="/admin/suspend/cashier/{{ $cashierInfo->ID }}">Suspend {{ $cashierInfo->display_name }}</a></li>
                                             
                                             @endif

@@ -74,6 +74,8 @@
                                             @if($adminInfo->suspended === 'yes')
 
                                             <li><a href="/admin/reactivate/{{ $adminInfo->ID }}">Reactivate {{ $adminInfo->display_name }}</a></li>
+
+                                            @else
                                             <li><a href="/admin/suspend/{{ $adminInfo->ID }}">Suspend {{ $adminInfo->display_name }}</a></li>
                                             
                                             @endif

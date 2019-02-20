@@ -26,7 +26,7 @@ class AdminController extends Controller
     }
 
     
-    public function reactivateAdmin($id)
+    public function confirmReactivationForm($id)
     {
 
         $adminInfo = Admin::info($id);
@@ -34,7 +34,7 @@ class AdminController extends Controller
         return view('admin.confirmAction.reactivateAdmin', compact('adminInfo'));
     }
 
-    public function suspendAdmin($id)
+    public function confirmSuspensionForm($id)
     {
 
         $adminInfo = Admin::info($id);

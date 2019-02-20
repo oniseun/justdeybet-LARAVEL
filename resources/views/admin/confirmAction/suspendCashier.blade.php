@@ -19,11 +19,11 @@ Suspend Cashier : {{ $cashierInfo->display_name }}
                     <input type="hidden" name="cashier_id" value="{{ $cashierInfo->ID }}"/>
                     <p>
                       <h1><b> {{ $cashierInfo->display_name }} </b></h1><hr/>
-                        Are you sure you want to suspend this cashier ? All activities will be frozen until they're reacivated  ?
+                        Are you sure you want to suspend this cashier ? All activities will be frozen until they're reactivated  ?
                     </p>
 
 
-                     <p><br/><a class="btn btn-default " href="admin/manage/cashiers" role="button">
+                     <p><br/><a class="btn btn-default " href="/admin/cashiers/list" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to list
                      </a>
                          <button class="btn btn-danger ajax-submit" role="button">Suspend {{ $cashierInfo->display_name }}</button>

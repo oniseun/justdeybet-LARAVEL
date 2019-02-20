@@ -23,7 +23,7 @@ Suspend Admin : {{ $adminInfo->display_name }}
                     </p>
 
 
-                     <p><br/><a class="btn btn-default " href="admin/manage/admins" role="button">
+                     <p><br/><a class="btn btn-default " href="/admin/list" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to list
                      </a>
                          <button class="btn btn-danger ajax-submit" role="button">Suspend {{ $adminInfo->display_name }}</button>
