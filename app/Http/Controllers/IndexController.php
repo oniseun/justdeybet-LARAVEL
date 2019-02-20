@@ -48,21 +48,7 @@ class IndexController extends Controller
         return view('public.terms');
     }
 
-    public function ticketInfo()
-    {
-        if(\Request::has(['ticket_id'])  )
-        {
-           
-            $ticketId = \Request::input('ticket_id');
 
-            if (\DB::table('tickets')->where('ticket_id', $ticketId)->exists())
-            {
-                $ticketInfo = Tickets::info($ticketId);
-                $ticketGames = Games::ticket_games($ticketId);
-                return view('public.ticketInfo', compact('ticketGames', 'ticketInfo'));
-            }
-        }
-    }
 
 
     public function adminLogin()

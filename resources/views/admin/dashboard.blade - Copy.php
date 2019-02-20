@@ -17,9 +17,7 @@
           @csrf 
             <table class="table data-table table-bordered">
                 
-            <?php
-              $c = 0;
-            ?>
+            
             @foreach($availableGames as $game_info)
 
                 <tr>
@@ -27,23 +25,23 @@
                 
                 @if($currentUser->can_create_tickets === 'yes' )
                 <!-- && time() < (strtotime($game_info->match_date) - (15 * 60)) -->
-                    <input type="checkbox" class="game-check" game-id="game{{ $game_info->game_id }}" name="games[{{ $c }}][game_id]"  value="{{ $game_info->game_id }}">
+                    <input type="checkbox" class="game-check" game-id="game{{ $game_info->game_id }}" name="game_id[]"  value="{{ $game_info->game_id }}">
                 @endif
                 </td>
 
                   <th role="row">{{ date("D d/m",strtotime($game_info->match_date)) }}</th>
-                  <td class="text-center">{{ ucfirst($game_info->home_team) }} <input type="hidden"  name="games[{{ $c }}][home_team]"  value="{{ $game_info->home_team }}"></td>
+                  <td class="text-center">{{ ucfirst($game_info->home_team) }} <input type="hidden"  name="game_score[{{ $game_info->game_id }}][home_team]"  value="{{ $game_info->home_team }}"></td>
        
                 @if($currentUser->can_create_tickets === 'yes' )
                 <!-- && time() < (strtotime($game_info->match_date) - (15 * 60)) -->
                 
-                <td class="text-center"><?=score_drop('games['.$c.'][home_score]','game'.$game_info->game_id,'home-select') ?></td>
-                <td class="text-center"><?=score_drop('games['.$c.'][away_score]','game'.$game_info->game_id,'away-select') ?></td>
+                <td class="text-center"><?=score_drop('game_score['.$game_info->game_id.'][home_score]','game'.$game_info->game_id,'home-select') ?></td>
+                <td class="text-center"><?=score_drop('game_score['.$game_info->game_id.'][away_score]','game'.$game_info->game_id,'away-select') ?></td>
                 @else
                    
                    <td class="text-center" colspan="2"> - </td>
                    @endif
-                  <td class="text-center">{{ ucfirst($game_info->away_team) }} <input type="hidden"  name="games[{{ $c }}][away_team]"  value="{{ $game_info->away_team }}"></td>
+                  <td class="text-center">{{ ucfirst($game_info->away_team) }} <input type="hidden"  name="game_score[{{ $game_info->game_id }}][away_team]"  value="{{ $game_info->away_team }}"></td>
                   <td>  <span class="label label-default">{{ $game_info->played_games }} tickets</span></td>
                     <td>
                  
@@ -73,7 +71,7 @@
                         @endif
                      </td>
                 </tr>
-            <!-- {{ $c++ }} -->
+            
           @endforeach
             
         </table>

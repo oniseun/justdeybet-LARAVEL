@@ -23,25 +23,25 @@
                     <div class="panel-body">
                     <table class="table data-table table-bordered">
                       <?php
-                      $c = 1;
-                      foreach($_POST['game_id'] as $gid):
-                        extract($_POST['game_score'][$gid]);
-                        if($c < 7)
-                        {
-                       ?>
+                        $c = 1;
+                      ?>
+                      @foreach($gameList as $gameInfo)
+                    
+                        @if(isset($gameInfo->game_id) && $c < 7)
+                        
+                       
                            <tr>
-                             <th role="row"><?=$c?></th>
-                             <td style="width:40%" class="text-center"><?=ucfirst($home_team)?></td>
-                             <td style="font-weight:bold" class="text-center"><?=$home_score?></td>
-                             <td style="font-weight:bold" class="text-center"><?=$away_score?></td>
-                             <td style="width:40%" class="text-center"><?=ucfirst($away_team)?></td>
+                             <th role="row">{{ $c++ }}</th>
+                             <td style="width:40%" class="text-center">{{ ucfirst($gameInfo->home_team) }}</td>
+                             <td style="font-weight:bold" class="text-center">{{ $gameInfo->home_score }}</td>
+                             <td style="font-weight:bold" class="text-center">{{ $gameInfo->away_score }}</td>
+                             <td style="width:40%" class="text-center"> {{ ucfirst($gameInfo->away_team) }}</td>
                            </tr>
-                       <?php
 
-                       $c++;
-                      }
-                     endforeach;
-                       ?>
+                        @endif
+                      
+                     @endforeach
+                    
                    </table>
 
                     </div>
@@ -63,22 +63,22 @@
 
                     <!-- compute game info -->
                     <?php
-                    $c = 1;
-                    foreach($_POST['game_id'] as $gid):
-                      extract($_POST['game_score'][$gid]);
-                      if($c < 7)
-                      {
-                     ?>
-
-                     <input type="hidden" name="games[]" value="<?=$gid?>"/>
-                     <input type="hidden" name="game_score[<?=$gid?>][home_score]" value="<?=$home_score?>"/>
-                    <input type="hidden" name="game_score[<?=$gid?>][away_score]" value="<?=$away_score?>"/>
-
-                     <?php
-                     $c++;
-                    }
-                   endforeach;
-                     ?>
+                        $c = 1;
+                        $key = 0;
+                    ?>
+                     @foreach($gameList as $gameInfo)
+                      @if(isset($gameInfo->game_id) && $c < 7)
+                      
+                    
+                     <input type="hidden" name="games[{{ $key }}][game_id]" value="{{ $gameInfo->game_id }}"/>
+                     <input type="hidden" name="games[{{ $key }}][home_score]" value="{{ $gameInfo->home_score }}"/>
+                    <input type="hidden" name="games[{{ $key }}][away_score]" value="{{ $gameInfo->away_score }}"/>
+                    
+                    <!-- {{ $c++ }} {{ $key++ }} -->
+                    @endif
+                     
+                   @endforeach
+                    
 
                     <!-- user data -->
                     <div class="form-group">

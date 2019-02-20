@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Games extends Model
 {
     public static $addUpdateGameFillable = ['home_team', 'away_team', 'season', 'league', 'match_stage', 'match_venue', 'match_date'] ,
-    $removeGameFillable =['game_id'] ;
+    $removeGameFillable =['game_id'] ,
+        $playGameFillable = ['games'],
+        $createTicketFillable = ['ticket_id', 'serial_number', 'amount', 'full_name', 'email', 'phone', 'phone2', 'address'],
+        $updateScoresFillable =  ['home_score','away_score'];
+
+
 
 
 
@@ -20,6 +25,48 @@ class Games extends Model
 
 
         return \DB::table('games')->insert($data);
+    }
+
+    public static function play_game($creator_id)
+    {
+        $data = \Request::only(self::$playGameFillable);
+
+        $gamesCount = 0;
+
+        // create Games
+
+        foreach ($data['games'] as $gameInfo) : // games already has [game_id] [home_score] [away_score]
+
+            $gameInfo['home_win'] = $gameInfo['home_score'] > $gameInfo['away_score'] ? 'yes' : 'no';
+            $gameInfo['away_win'] = $gameInfo['away_score'] > $gameInfo['home_score'] ? 'yes' : 'no';
+            $gameInfo['draw'] = $gameInfo['home_score'] == $gameInfo['away_score'] ? 'yes' : 'no';
+
+            $gameInfo['score_margin'] = $draw == 'yes' ? 0 : 0;
+            $gameInfo['score_margin'] = $gameInfo['home_score'] > $gameInfo['away_score'] ? ($gameInfo['home_score'] - $gameInfo['away_score']) : $gameInfo['score_margin'];
+            $gameInfo['score_margin'] = $gameInfo['away_score'] > $gameInfo['home_score'] ? ($gameInfo['away_score'] - $gameInfo['home_score']) : $gameInfo['score_margin'];
+            $gameInfo['date_created'] = now();
+            $gameInfo['creator_id'] = $creator_id;
+            $gameInfo['ip_address'] = \Request::ip();
+            $gameInfo['user_agent'] = \Request::header('User-Agent');
+
+            \DB::table('played_games')->insert($data);
+
+
+            $gamesCount++;
+
+        endforeach;
+
+        $ticketData = \Request::only(self::$createTicketFillable); 
+
+        $ticketData['creator_id'] = $creator_id;
+        $ticketData['usage_count'] = $gamesCount;
+        $ticketData['date_created'] = now();
+
+        return \DB::table('tickets')->insert($ticketData);
+
+        // create ticket
+
+        
     }
 
 
@@ -35,9 +82,102 @@ class Games extends Model
 
     }
 
-    public static function update_score($game_id)
+    public static function update_score()
     {
+
+
+        $currentGameInfo = \Request::only(self::$updateScoresFillable);
+        $game_id = $currentGameInfo['game_id'];
+
+        $prevGameInfo = self::info($game_id);
+
+        $prev_game_status = $prevGameInfo['game_status'];
+
+        if ($prev_game_status == 'played') {
+  // get previous data and deduct points from db
+            $prev_home_score = $prevGameInfo['home_score'];
+            $prev_away_score = $prevGameInfo['away_score'];
+            $prev_home_win = $prevGameInfo['home_win'];
+            $prev_away_win = $prevGameInfo['away_win'];
+            $prev_draw = $prevGameInfo['draw'];
+
+            $prev_score_margin = $prevGameInfo['score_margin'];
+        }
+# ---------------------------------------------------
+
+        $currentGameInfo['home_win'] = $currentGameInfo['home_score'] > $currentGameInfo['away_score'] ? 'yes' : 'no';
+        $currentGameInfo['away_win'] = $currentGameInfo['away_score'] > $currentGameInfo['home_score'] ? 'yes' : 'no';
+        $currentGameInfo['draw'] = $currentGameInfo['home_score'] == $currentGameInfo['away_score'] ? 'yes' : 'no';
+
+        $currentGameInfo['score_margin'] = $currentGameInfo['draw'] == 'yes' ? 0 : 0;
+        $currentGameInfo['score_margin'] = $currentGameInfo['home_score'] > $currentGameInfo['away_score'] ? ($currentGameInfo['home_score'] - $currentGameInfo['away_score']) : $currentGameInfo['score_margin'];
+        $currentGameInfo['score_margin'] = $currentGameInfo['away_score'] > $currentGameInfo['home_score'] ? ($currentGameInfo['away_score'] - $currentGameInfo['home_score']) : $currentGameInfo['score_margin'];
+        $currentGameInfo['date_updated'] = now();
+        $currentGameInfo['game_status'] = 'played';
+
+        $updateQuery = \DB::table('games')->where('game_id', $game_id)->update($currentGameInfo);
+
+        if ($prev_game_status == 'played') {
+    // decrement points by 5 if score was predicted correctly
+            \DB::statement("UPDATE played_games SET points_won = points_won - 5 WHERE game_id = $game_id AND home_score = $prev_home_score AND away_score = $prev_away_score");
+
+
+    // decrement points by 1 if home_win
+            if ($prev_home_win == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND home_win = 'yes'");
+      // decrement points by 1 if score margin is correct
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND home_win = 'yes' AND score_margin = $prev_score_margin");
+            }
+    // decrement points by 1 if away_win
+            if ($prev_away_win == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND away_win = 'yes'");
+      // increment points by 1 if score margin is correct
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND away_win = 'yes' AND score_margin = $prev_score_margin");
+            }
+    // deduct points by 1 if draw
+            if ($prev_draw == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND draw = 'yes'");
+      // deduct extra 1 point ( to make up for score margin - that is if predicted score is the exact)
+                \DB::statement("UPDATE played_games SET points_won = points_won - 1 WHERE game_id = $game_id AND home_score = $prev_home_score AND away_score = $prev_away_score");
+            }
+
+
+  // end of removing points for reupdate
+        }
+
+        if ($updateQuery) {
+    // increment points by 5 if score was predicted correctly
+            \DB::statement("UPDATE played_games SET points_won = points_won + 5 WHERE game_id = $game_id AND home_score = {$currentGameInfo['home_score']} AND away_score = {$currentGameInfo['away_score']}");
+
+    // increment points by 1 if home_win
+            if ($currentGameInfo['home_win'] == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND home_win = 'yes'");
+      // increment points by 1 if score margin is correct
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND home_win = 'yes' AND score_margin = {$currentGameInfo['score_margin']}");
+            }
+    // increment points by 1 if away_win
+            if ($currentGameInfo['away_win'] == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND away_win = 'yes'");
+      // increment points by 1 if score margin is correct
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND away_win = 'yes' AND score_margin = {$currentGameInfo['score_margin']}");
+            }
+    // increment points by 1 if draw
+            if ($currentGameInfo['draw'] == 'yes') {
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND draw = 'yes'");
+      // add extra 1 point ( to make up for score margin - that is if predicted score is the exact)
+                \DB::statement("UPDATE played_games SET points_won = points_won + 1 WHERE game_id = $game_id AND home_score = {$currentGameInfo['home_score']} AND away_score = {$currentGameInfo['away_score']}");
+            }
+
+
+            \DB::statement("UPDATE played_games SET played ='yes', date_updated = now() WHERE game_id = $game_id ");
+
+        } 
         
+        else 
+        {
+            return $updateQuery;
+        }
+
     }
 
     public static function remove_game($game_id)

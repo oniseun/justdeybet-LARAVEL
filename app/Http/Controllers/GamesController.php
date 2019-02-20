@@ -47,6 +47,17 @@ class GamesController extends Controller
         $char_limit = 8;
         $ticketID = strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $char_limit));
         $serialNumber = rand(4566, 7665) . rand(5556, 9999) . rand(4889, 9999);
+
+      
+
+        $games = \Request::input('games');
+        //print_r($allGames);
+        $gameList = json_decode(json_encode($games));
+        
+        return view('admin.forms.playGame', compact('ticketID','serialNumber','gameList'));
+
+       
+
     }
 
     

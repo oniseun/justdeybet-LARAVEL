@@ -24,7 +24,15 @@ Route::get('shops', 'IndexController@shops');
 Route::get('terms', 'IndexController@terms');
 Route::get('how-to-play', 'IndexController@howToPlay');
 Route::get('login', 'IndexController@adminLogin');
-Route::post('ticket', 'IndexController@ticketInfo');
+Route::post('ticket', 'TicketsController@ticketInfoPublic');
+Route::get('ticket/{ticketID}', 'TicketsController@infoPublic')->where('ticketID', '[A-Za-z0-9]+');
+
+Route::get('test', function () {
+    $data['update'] = 'yes';
+    echo " {$data['update']} ";
+    echo now();
+    echo now('Africa/Lagos');
+});
 
 
 Route::group(['prefix' => 'admin'], function () {
@@ -33,6 +41,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('dialogs/add/game', 'GamesController@addGameForm');
     Route::get('remove/game/{gameID}', 'GamesController@ConfirmRemoveGameForm')->where('gameID', '[0-9]+');
     Route::get('update/game/score/{gameID}', 'GamesController@UpdateScoreForm')->where('gameID', '[0-9]+');
+    Route::post('play/game', 'GamesController@PlayGameForm');
+
+    
 
     Route::get('list', 'AdminController@manageList'); // admin list 
     Route::get('suspended', 'AdminController@suspendedList'); // suspended admins

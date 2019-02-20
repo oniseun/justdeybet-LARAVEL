@@ -7,8 +7,8 @@
           <br/>
             <div class="col-lg-offset-3 col-lg-6">
              
-                @if ($gameInfo->game_status == 'played') 
-                   <b>Re-updating scores will remove all awarded points for this match</b>
+                @if($gameInfo->game_status == 'played') 
+                   <b>Re-updating scores will remove all awarded points for this match.</b>
                 @endif
 
               <div class="panel  panel-default">

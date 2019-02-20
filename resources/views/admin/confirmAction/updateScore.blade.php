@@ -10,7 +10,7 @@ Update Scores : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
             <div class="col-lg-offset-3 col-lg-6">
               @if( $gameInfo->game_status == 'played')
              
-                {{!! ajax_alert('warning','<b>Re-updating scores will remove all awarded points for this match</b> ') !!}}
+                {!! ajax_alert('warning','<b>Re-updating scores will remove all awarded points for this match</b> ') !!}
 
               @endif
                
@@ -28,13 +28,13 @@ Update Scores : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
                     <input type="hidden" name="re_update" value="yes"/>
                   @endif
 
-                  <input type="hidden" name="game_id" value="<?=$gameInfo->game_id?>"/>
+                  <input type="hidden" name="game_id" value="{{ $gameInfo->game_id }}"/>
                   <div class="form-group">
                     <label for="home_score" class="col-sm-5 control-label">{{ $gameInfo->home_team }} (score)</label>
                     <div class="col-sm-7">
                       <select class="form-control" id="home_score" name="home_score">
                         
-                        @for($i=0;$i<=10;$i++)
+                        @for($i=0; $i<=10; $i++)
                           
                           <option value="{{ $i }}"> {{ $i }}</option>
                       
@@ -47,7 +47,7 @@ Update Scores : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
                     <label for="away_score" class="col-sm-5 control-label">{{ $gameInfo->away_team }} (score)</label>
                     <div class="col-sm-7"><select class="form-control" id="away_score" name="away_score">
                       
-                        @for($i=0;$i<=10;$i++)
+                        @for($i=0; $i<=10; $i++)
                         
                             <option value="{{ $i }}">{{ $i }}</option>
                      

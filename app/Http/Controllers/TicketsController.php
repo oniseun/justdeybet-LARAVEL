@@ -66,6 +66,30 @@ class TicketsController extends Controller
         }
     }
 
+    public function infoPublic($ticketID)
+    {
+        if (\DB::table('tickets')->where('ticket_id', $ticketID)->exists()) {
+            $ticketInfo = Tickets::info($ticketID);
+            $ticketGames = Games::ticket_games($ticketID);
+            return view('public.ticketInfo', compact('ticketGames', 'ticketInfo'));
+        }
+
+    }
+
+    public function ticketInfoPublic()
+    {
+        if (\Request::has(['ticket_id'])) {
+
+            $ticketID = \Request::input('ticket_id');
+
+            if (\DB::table('tickets')->where('ticket_id', $ticketID)->exists()) {
+                $ticketInfo = Tickets::info($ticketID);
+                $ticketGames = Games::ticket_games($ticketID);
+                return view('public.ticketInfo', compact('ticketGames', 'ticketInfo'));
+            }
+        }
+    }
+
     public function winningTickets()
     {
         $winningTickets = Tickets::winning_tickets_list();
