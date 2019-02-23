@@ -1,7 +1,9 @@
  
  @extends('master.adminOneColumn')
 
-@section('title','pay Out ticket ')
+@section('title')
+Pay Out Ticket (N {{ ticket_payout($ticketInfo->amount,$ticketInfo->total_points) }} - {{ $ticketInfo->ticket_id }} )
+@endsection
 @section('content')
 
 
