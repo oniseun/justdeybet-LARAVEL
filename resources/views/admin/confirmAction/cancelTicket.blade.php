@@ -26,7 +26,7 @@
                        <a class="btn btn-default " href="/admin/tickets/list" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to tickets
                      </a>
-                         <button class="btn btn-primary ajax-submit" role="button">Cancel Ticket</button>
+                         <button class="btn btn-primary" role="button">Cancel Ticket</button>
 
                          <a class="btn btn-info " href="/admin/ticket/{{ $ticketInfo->ticket_id }}" role="button">
                           View Ticket Info

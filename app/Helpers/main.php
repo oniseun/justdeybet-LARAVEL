@@ -1,6 +1,11 @@
 <?php
 
+function mysql_timestamp($date = NULL)
+{
+  $now = date("Y-m-d H:i:s");
+  return $date == NULL ? $now : date("Y-m-d H:i:s", strtotime($date));
 
+}
 function ajax_alert($type,$message)
 {
     ?>

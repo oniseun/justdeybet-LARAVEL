@@ -28,7 +28,7 @@ Remove Game : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
                        <a class="btn btn-default " href="/admin/dashboard" role="button">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to games
                        </a>
-                         <button class="btn btn-danger ajax-submit" role="button">Remove game</button>
+                         <button class="btn btn-danger" role="button">Remove game</button>
 
                    </p>
                 </form>

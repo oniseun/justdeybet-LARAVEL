@@ -51,8 +51,8 @@ class Activities extends Model
         return \DB::table('admin_logs')->insert(
     //set
             [
-                'action_user_id' => $adminInfo['id'],
-                'username' => $adminInfo['user_type'] . ' : ' . $adminInfo['display_name'],
+                'action_user_id' => $adminInfo->ID,
+                'username' => $adminInfo->user_type . ' : ' . $adminInfo->display_name,
                 'action_type' => $action_type,
                 'comment' => $comment,
                 'ip' => \Request::ip(),
@@ -61,6 +61,6 @@ class Activities extends Model
             
         );
 
-        self::update_activity($adminInfo['id']);
+        self::update_activity($adminInfo->ID);
     }
 }

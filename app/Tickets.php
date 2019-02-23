@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tickets extends Model
 {
-    public static $payoutFillable = ['amount_paid_out'];
+    public static $payoutFillable = ['amount_paid_out','ticket_id'];
+    public static $cancelTicketFillable = ['ticket_id'];
 
-    public static function cancel_ticket($ticket_id)
+    public static function cancel()
     {
-        return \DB::table('tickets')->where('ticket_id',$ticket_id)->update(['cancelled' => 'yes']);
+        $data = \Request::only(self::$cancelTicketFillable);
+
+        return \DB::table('tickets')->where('ticket_id',$data['ticket_id'])->update(['cancelled' => 'yes']);
     }
     
      public static function info($ticket_id)
@@ -25,13 +28,13 @@ class Tickets extends Model
                 ->where('ticket_id', $ticket_id)->first();
 
         }
-    public static function make_payout($ticket_id)
+    public static function make_payout()
     {
         $data = \Request::only(self::$payoutFillable);
         
         $data['paid_out'] ='yes';
 
-        return \DB::table('tickets')->where('ticket_id', $ticket_id)->update($data);
+        return \DB::table('tickets')->where('ticket_id', $data['ticket_id'])->update($data);
     }
 
 

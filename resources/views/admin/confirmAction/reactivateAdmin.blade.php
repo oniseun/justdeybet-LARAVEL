@@ -24,7 +24,7 @@
                      <p><br/><a class="btn btn-default " href="/admin/suspended" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to list
                      </a>
-                         <button class="btn btn-danger ajax-submit" role="button">Re-activate {{ $adminInfo->display_name }}</button>
+                         <button class="btn btn-danger" role="button">Re-activate {{ $adminInfo->display_name }}</button>
 
                    </p>
                 </form>

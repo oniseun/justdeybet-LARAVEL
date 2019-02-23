@@ -48,7 +48,50 @@ class AdminController extends Controller
         $adminList = Admin::suspended_admin_list();
 
         return view('admin.list.suspendedAdmins', compact('siteInfo', 'adminList'));
-    }   
+    }
+
+    public function addAdmin()
+    {
+        if (Admin::add()){
+            $input = \Request::only(Admin::$addAdminFillable);
+            Activities::update_account_log(Auth::currentUser(), 'admin_add', "Added {$input['display_name']} to admin list");
+            echo ajax_alert('success', "Successfully added admin");
+        } else {
+            echo ajax_alert('warning', 'Sorry an error occured, check your input');
+        }
+    }
+
+    public function suspendAdmin()
+    {
+        if (Admin::suspend()) {
+            $input = \Request::only(Admin::$suspendReactivateAdminFillable);
+            $adminInfo = Admin::info($input['admin_id']);
+            $mainMSG = "Successfully suspended {$adminInfo->display_name} ";
+            Activities::update_account_log(Auth::currentUser(), 'admin_suspension', $mainMSG);
+            return redirect('/admin/suspended')->with('success', $mainMSG);
+
+        } else {
+            return back()->with('failure', 'Sorry an error occured, Please try again');
+        }
+    }
+
+    public function reactivateAdmin()
+    {
+        if (Admin::reactivate()) {
+            $input = \Request::only(Admin::$suspendReactivateAdminFillable);
+            $adminInfo = Admin::info($input['admin_id']);
+            $mainMSG = "Successfully reactivated {$adminInfo->display_name} ";
+            Activities::update_account_log(Auth::currentUser(), 'admin_reactivation', $mainMSG);
+            return redirect('/admin/list')->with('success', $mainMSG);
+
+        } else {
+            return back()->with('failure', 'Sorry an error occured, Please try again');
+        }
+    }
+
+    
+
+
 
     
 

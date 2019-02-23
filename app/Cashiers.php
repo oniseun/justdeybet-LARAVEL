@@ -19,7 +19,7 @@ class Cashiers extends Model
 
     }
 
-    public static function add_cashier()
+    public static function add()
     {
         $data = \Request::only(self::$addCashierFillable);
         $defaultPassword = 'jdbPassword#2017';
@@ -34,14 +34,14 @@ class Cashiers extends Model
         return \DB::table('accounts')->insert($data);
     }
 
-    public static function suspend_cashier()
+    public static function suspend()
     {
         $data = \Request::only(self::$suspendReactivateCashierFillable);
 
         return \DB::table('accounts')->where('user_type', 'cashier')->where('ID', $data['cashier_id'])->update(['suspended' => 'yes']);
     }
 
-    public static function reactivate_cashier()
+    public static function reactivate()
     {
         $data = \Request::only(self::$suspendReactivateCashierFillable);
 

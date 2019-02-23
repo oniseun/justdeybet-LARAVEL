@@ -28,34 +28,43 @@ Route::post('ticket', 'TicketsController@ticketInfoPublic');
 Route::get('ticket/{ticketID}', 'TicketsController@infoPublic')->where('ticketID', '[A-Za-z0-9]+');
 
 Route::get('test', function () {
-    $data['update'] = 'yes';
-    echo " {$data['update']} ";
-    echo now();
-    echo now('Africa/Lagos');
+    echo mysql_timestamp("28 june 1993 13:00");
 });
 
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::options('{any?}', function () {
+        return response('', 200);
+    })->where('any', '.*');
 
     Route::get('dashboard','GamesController@dashboard');
     Route::get('dialogs/add/game', 'GamesController@addGameForm');
-    Route::get('remove/game/{gameID}', 'GamesController@ConfirmRemoveGameForm')->where('gameID', '[0-9]+');
-    Route::get('update/game/score/{gameID}', 'GamesController@UpdateScoreForm')->where('gameID', '[0-9]+');
-    Route::post('play/game', 'GamesController@PlayGameForm');
+    Route::get('remove/game/{gameID}', 'GamesController@confirmRemoveGameForm')->where('gameID', '[0-9]+');
+    Route::get('update/game/score/{gameID}', 'GamesController@updateScoreForm')->where('gameID', '[0-9]+');
+    Route::post('play/game', 'GamesController@playGameForm');
+    Route::post('finalize/add/game', 'GamesController@addGame');
+    Route::post('finalize/play/game', 'GamesController@playGame');
+    Route::post('finalize/update/game/score', 'GamesController@updateGameScore');
+    Route::post('finalize/remove/game', 'GamesController@removeGame');
 
     
-
     Route::get('list', 'AdminController@manageList'); // admin list 
     Route::get('suspended', 'AdminController@suspendedList'); // suspended admins
     Route::get('dialogs/add/admin', 'AdminController@addAdminForm');
     Route::get('suspend/{adminID}', 'AdminController@confirmSuspensionForm')->where('adminID', '[0-9]+');
     Route::get('reactivate/{adminID}', 'AdminController@confirmReactivationForm')->where('adminID', '[0-9]+');
+    Route::post('finalize/add/admin', 'AdminController@addAdmin');
+    Route::post('finalize/suspend/admin', 'AdminController@suspendAdmin');
+    Route::post('finalize/reactivate/admin', 'AdminController@reactivateAdmin');
 
     Route::get('cashiers/list', 'CashiersController@manageList');
     Route::get('cashiers/suspended', 'CashiersController@suspendedList');
     Route::get('dialogs/add/cashier', 'CashiersController@addCashierForm');
     Route::get('suspend/cashier/{cashierID}', 'CashiersController@confirmSuspensionForm')->where('cashierID', '[0-9]+');
     Route::get('reactivate/cashier/{cashierID}', 'CashiersController@confirmReactivationForm')->where('cashierID', '[0-9]+');
+    Route::post('finalize/add/cashier', 'CashiersController@addCashier');
+    Route::post('finalize/suspend/cashier', 'CashiersController@suspendCashier');
+    Route::post('finalize/reactivate/cashier', 'CashiersController@reactivateCashier');
 
     Route::get('tickets/list', 'TicketsController@manageList');
     Route::get('tickets/canceled', 'TicketsController@canceledTickets');
@@ -63,8 +72,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('tickets/paidout', 'TicketsController@paidOutTickets');
     Route::get('ticket/{ticketID}', 'TicketsController@info')->where('ticketID', '[A-Za-z0-9]+');
     Route::post('ticket', 'TicketsController@ticketInfo');
-    Route::get('cancel/ticket/{ticketID}', 'TicketsController@ConfirmCancelTicketForm')->where('ticketID', '[A-Za-z0-9]+');
+    Route::get('cancel/ticket/{ticketID}', 'TicketsController@confirmCancelTicketForm')->where('ticketID', '[A-Za-z0-9]+');
     Route::get('payout/ticket/{ticketID}', 'TicketsController@confirmPayOutTicketForm')->where('ticketID', '[A-Za-z0-9]+');
+    Route::post('finalize/cancel/ticket', 'TicketsController@cancelTicket');
+    Route::post('finalize/payout/ticket', 'TicketsController@payOutTicket');
 
     Route::get('activities/list', 'ActivitiesController@manageList');
     Route::get('next/activities/{timestamp}', 'ActivitiesController@nextSiteActivities')->where('timestamp', '[0-9]+');

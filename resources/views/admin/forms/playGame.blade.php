@@ -140,7 +140,7 @@
                     <div class="form-group ">
                       <div class="col-sm-offset-3 col-sm-9">
                         <a class="btn btn-default"  href="/admin/dashboard" role="button">Back to game list</a>
-                        <button type="submit" class="btn btn-success ajax-submit">Create ticket and print out</button>
+                        <button type="submit" class="btn btn-success">Create ticket and print out</button>
 
                       </div>
                     </div>

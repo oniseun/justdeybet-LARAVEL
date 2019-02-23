@@ -26,7 +26,7 @@ class Admin extends Model
 
 
   
-    public static function add_admin()
+    public static function add()
     {
         $data = \Request::only(self::$addAdminFillable);
         $defaultPassword = 'jdbPassword#2017';
@@ -43,14 +43,14 @@ class Admin extends Model
 
     
 
-    public static function suspend_admin()
+    public static function suspend()
     {
         $data = \Request::only(self::$suspendReactivateAdminFillable);
 
         return \DB::table('accounts')->where('user_type', 'admin')->where('ID', $data['admin_id'])->update(['suspended' => 'yes']);
     }
 
-    public static function reactivate_admin()
+    public static function reactivate()
     {
         $data = \Request::only(self::$suspendReactivateAdminFillable);
 

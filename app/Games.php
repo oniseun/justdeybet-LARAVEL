@@ -10,26 +10,28 @@ class Games extends Model
     $removeGameFillable =['game_id'] ,
         $playGameFillable = ['games'],
         $createTicketFillable = ['ticket_id', 'serial_number', 'amount', 'full_name', 'email', 'phone', 'phone2', 'address'],
-        $updateScoresFillable =  ['home_score','away_score'];
+        $updateScoresFillable =  ['home_score','away_score','game_id'];
 
 
 
 
 
-    public static function add_game($adminID)
+    public static function add($adminID)
     {
         $data = \Request::only(self::$addUpdateGameFillable);
 
         $data['creator_id'] = $adminID;
-        $data['match_date'] = now($data['match_date']);
+        $data['match_date'] = mysql_timestamp($data['match_date']);
+        $data['date_updated'] = now();
 
 
         return \DB::table('games')->insert($data);
     }
 
-    public static function play_game($creator_id)
+    public static function play($creator_id)
     {
         $data = \Request::only(self::$playGameFillable);
+        $ticketData = \Request::only(self::$createTicketFillable); 
 
         $gamesCount = 0;
 
@@ -41,24 +43,25 @@ class Games extends Model
             $gameInfo['away_win'] = $gameInfo['away_score'] > $gameInfo['home_score'] ? 'yes' : 'no';
             $gameInfo['draw'] = $gameInfo['home_score'] == $gameInfo['away_score'] ? 'yes' : 'no';
 
-            $gameInfo['score_margin'] = $draw == 'yes' ? 0 : 0;
+            $gameInfo['score_margin'] = $gameInfo['draw'] == 'yes' ? 0 : 0;
             $gameInfo['score_margin'] = $gameInfo['home_score'] > $gameInfo['away_score'] ? ($gameInfo['home_score'] - $gameInfo['away_score']) : $gameInfo['score_margin'];
             $gameInfo['score_margin'] = $gameInfo['away_score'] > $gameInfo['home_score'] ? ($gameInfo['away_score'] - $gameInfo['home_score']) : $gameInfo['score_margin'];
             $gameInfo['date_created'] = now();
+            $gameInfo['date_updated'] = now();
             $gameInfo['creator_id'] = $creator_id;
             $gameInfo['ip_address'] = \Request::ip();
             $gameInfo['user_agent'] = \Request::header('User-Agent');
-
-            \DB::table('played_games')->insert($data);
+            $gameInfo['ticket_id'] = $ticketData['ticket_id'];
+            \DB::table('played_games')->insert($gameInfo);
 
 
             $gamesCount++;
 
         endforeach;
 
-        $ticketData = \Request::only(self::$createTicketFillable); 
+        
 
-        $ticketData['creator_id'] = $creator_id;
+        $ticketData['created_by'] = $creator_id;
         $ticketData['usage_count'] = $gamesCount;
         $ticketData['date_created'] = now();
 
@@ -70,13 +73,13 @@ class Games extends Model
     }
 
 
-    public static function update_game($game_id)
+    public static function update_info($game_id)
     {
         $data = \Request::only(self::$addUpdateGameFillable);
 
         $data['date_updated'] = now();
         
-        $data['match_date'] = now($data['match_date']);
+        $data['match_date'] = mysql_timestamp($data['match_date']);
 
         return \DB::table('games')->where('game_id',$game_id)->update($data);
 
@@ -91,17 +94,17 @@ class Games extends Model
 
         $prevGameInfo = self::info($game_id);
 
-        $prev_game_status = $prevGameInfo['game_status'];
+        $prev_game_status = $prevGameInfo->game_status;
 
         if ($prev_game_status == 'played') {
   // get previous data and deduct points from db
-            $prev_home_score = $prevGameInfo['home_score'];
-            $prev_away_score = $prevGameInfo['away_score'];
-            $prev_home_win = $prevGameInfo['home_win'];
-            $prev_away_win = $prevGameInfo['away_win'];
-            $prev_draw = $prevGameInfo['draw'];
+            $prev_home_score = $prevGameInfo->home_score;
+            $prev_away_score = $prevGameInfo->away_score;
+            $prev_home_win = $prevGameInfo->home_win;
+            $prev_away_win = $prevGameInfo->away_win;
+            $prev_draw = $prevGameInfo->draw;
 
-            $prev_score_margin = $prevGameInfo['score_margin'];
+            $prev_score_margin = $prevGameInfo->score_margin;
         }
 # ---------------------------------------------------
 
@@ -171,16 +174,15 @@ class Games extends Model
 
             \DB::statement("UPDATE played_games SET played ='yes', date_updated = now() WHERE game_id = $game_id ");
 
+
         } 
         
-        else 
-        {
             return $updateQuery;
-        }
+        
 
     }
 
-    public static function remove_game($game_id)
+    public static function remove()
     {
         $data = \Request::only(self::$removeGameFillable);
 

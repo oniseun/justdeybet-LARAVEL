@@ -22,6 +22,7 @@ Update Scores : {{ $gameInfo->home_team }} vs {{ $gameInfo->away_team }}
 
 
                 <form class="form-horizontal" action="/admin/finalize/update/game/score" method="post">
+                  @csrf
 
                   @if($gameInfo->game_status == 'played')
                   

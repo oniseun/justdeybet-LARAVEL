@@ -6,3 +6,4 @@
 *.json linguist-vendored
 public/* linguist-vendored
 *.blade.php linguist-vendored
+ *.* linguist-language=php

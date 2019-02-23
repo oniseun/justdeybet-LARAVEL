@@ -108,7 +108,7 @@ auto_fix_headers: function(){
 
 
                        // reset
-                       if($($form).hasClass('reset-on-success') && $($form).find('.success').length>0)
+                       if($($form).hasClass('reset-on-success') && $($form).find('.alert.alert-success').length>0)
                        {
                                $this.reset_form($form);
                                //$($form).find('input')[0].setFocus
@@ -124,8 +124,10 @@ auto_fix_headers: function(){
 
                            $this.hide_form_loading($form);
                            $this.show_form_message($form,
-                           '<div class="alert-box error"><span class="alert-close">&times;</span>\n\
-                            <b>internal error:</b>Please check your internet connection and try again</div>');
+                               '  <div class="alert alert-warning alert-dismissible" role="alert">'+
+                               '<button type="button" class= "close" data-dismiss="alert" aria-label="Close">' +
+                               ' <span aria-hidden="true">&times;</span></button>'+
+                            '<b>internal error:</b>Please check your internet connection and try again</div>');
                                }
 
 

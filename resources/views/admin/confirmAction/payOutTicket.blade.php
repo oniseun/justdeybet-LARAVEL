@@ -14,12 +14,12 @@
                 <div class="panel-heading"><b>Payout Ticket ? </b></div>
                 <div class="panel-body">
 
-                  <form class="text-center"  action="/admin/finalize/payout" method="post">
+                  <form class="text-center"  action="/admin/finalize/payout/ticket" method="post">
                     @csrf
-                    <input type="hidden" name="ticket_id" value="{{ $ticketInfo->id }}"/>
+                    <input type="hidden" name="ticket_id" value="{{ $ticketInfo->ticket_id }}"/>
                     <input type="hidden" name="amount_paid_out" value="{{ ticket_payout($ticketInfo->amount,$ticketInfo->total_points) }}"/>
                     <p>
-                      <h1><b> <?=$ticket_id?> </b></h1><hr/>
+                      <h1><b> {{ $ticketInfo->ticket_id }} </b></h1><hr/>
                       <h3><b style="color:seagreen"> {{ number_format(ticket_payout($ticketInfo->amount,$ticketInfo->total_points)) }} </b></h3><hr/>
                        Are you sure you've paid out <b> {{ number_format(ticket_payout($ticketInfo->amount,$ticketInfo->total_points)) }}</b> to <b> {{ $ticketInfo->full_name }}  ?
                     </p>
@@ -29,7 +29,7 @@
                           <a class="btn btn-default " href="/admin/tickets/winning" role="button">
                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to tickets
                           </a>
-                         <button class="btn btn-success ajax-submit" role="button">Yes I'm sure</button>
+                         <button class="btn btn-success" role="button">Yes I'm sure</button>
 
                          <a class="btn btn-info" href="/admin/ticket/{{ $ticketInfo->ticket_id }}" role="button">
                           View Ticket Info

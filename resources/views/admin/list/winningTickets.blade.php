@@ -49,7 +49,7 @@
                           <td> {{ $ticketInfo->usage_count }}</td>
                           <td>{{ $ticketInfo->total_points }}</td>
                           <td>N {{ number_format($ticketInfo->amount) }}</td>
-                          <td><b style="color:seagreen">N{{ number_format(ticket_payout($amount,$ticketInfo->total_points)) }}</b></td>
+                          <td><b style="color:seagreen">N{{ number_format(ticket_payout($ticketInfo->amount,$ticketInfo->total_points)) }}</b></td>
                           <td>
                             <!-- Single button -->
 

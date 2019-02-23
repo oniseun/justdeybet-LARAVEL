@@ -26,7 +26,7 @@ Suspend Admin : {{ $adminInfo->display_name }}
                      <p><br/><a class="btn btn-default " href="/admin/list" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to list
                      </a>
-                         <button class="btn btn-danger ajax-submit" role="button">Suspend {{ $adminInfo->display_name }}</button>
+                         <button class="btn btn-danger" role="button">Suspend {{ $adminInfo->display_name }}</button>
 
                    </p>
                 </form>
