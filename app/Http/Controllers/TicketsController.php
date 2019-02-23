@@ -84,11 +84,10 @@ class TicketsController extends Controller
             exit;
         }
 
-        if (\DB::table('tickets')->where('ticket_id', $ticketID)->exists()) {
             $ticketInfo = Tickets::info($ticketID);
             $ticketGames = Games::ticket_games($ticketID);
             return view('admin.ticketInfo', compact('ticketGames', 'ticketInfo'));
-        }
+        
 
     }
 
@@ -106,11 +105,10 @@ class TicketsController extends Controller
                 exit;
             }
 
-            if (\DB::table('tickets')->where('ticket_id', $ticketID)->exists()) {
                 $ticketInfo = Tickets::info($ticketID);
                 $ticketGames = Games::ticket_games($ticketID);
                 return view('admin.ticketInfo', compact('ticketGames', 'ticketInfo'));
-            }
+            
         }
     }
 
