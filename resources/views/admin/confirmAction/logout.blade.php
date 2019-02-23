@@ -16,7 +16,7 @@
                      If you logout , you will not be able to access your stored details until you login again
 
                      <p><br/>
-                     <button class="btn btn-danger ajax-submit" name="logout" role="button">Logout now</button>
+                     <button class="btn btn-danger" name="logout" role="button">Logout now</button>
                      <a class="btn btn-default " href="/admin/dashboard" role="button">
                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to dashboard
                      </a>

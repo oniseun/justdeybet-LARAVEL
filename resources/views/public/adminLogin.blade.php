@@ -11,6 +11,20 @@
 <body class="">
 @include('components.public.header')
     <div class="container">
+      
+    @if(session('failure'))
+        <p>
+        {!! ajax_alert('danger',session('failure')) !!}
+        </p>
+        
+    @endif
+
+    @if(session('success'))
+        <p>
+        {!! ajax_alert('success',session('success')) !!}
+        </p>
+    @endif
+
         <div class="row">
           <br/>
             <div class="col-lg-offset-3 col-lg-6">
@@ -20,11 +34,14 @@
               <br/>
               <form class="form-horizontal"  action="/finalize/login" method="post">
                 @csrf
+                @if(session('redirect_url'))
+              <input type="hidden" name="redirect_url" value="/{{ session('redirect_url') }}" />
+              @endif
 
                 <div class="form-group form-group-lg">
-                  <label for="username" class="col-sm-4 control-label">Username</label>
+                  <label for="email" class="col-sm-4 control-label">Email</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control input-lg" id="username" name="username"  placeholder="Enter username here...">
+                    <input type="text" class="form-control input-lg" id="email" name="email"  placeholder="Enter email here...">
                   </div>
                 </div>
 
@@ -49,7 +66,7 @@
 
                 <div class="form-group form-group-lg">
                   <div class="col-sm-offset-4 col-sm-8">
-                    <button type="submit" class="btn btn-primary btn-lg ajax-submit">Login Now</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Login Now</button>
                   </div>
                 </div>
 

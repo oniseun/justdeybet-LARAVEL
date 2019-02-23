@@ -23,16 +23,16 @@ Route::get('how-it-works', 'IndexController@howItWorks');
 Route::get('shops', 'IndexController@shops');
 Route::get('terms', 'IndexController@terms');
 Route::get('how-to-play', 'IndexController@howToPlay');
-Route::get('login', 'IndexController@adminLogin');
+Route::get('login', 'AuthController@adminLoginForm');
+Route::post('finalize/login', 'AuthController@login');
+Route::post('finalize/contact', 'IndexController@contact');
+
 Route::post('ticket', 'TicketsController@ticketInfoPublic');
 Route::get('ticket/{ticketID}', 'TicketsController@infoPublic')->where('ticketID', '[A-Za-z0-9]+');
 
-Route::get('test', function () {
-    echo mysql_timestamp("28 june 1993 13:00");
-});
 
+Route::group(['prefix' => 'admin', 'middleware' => 'web.auth'], function () {
 
-Route::group(['prefix' => 'admin'], function () {
     Route::options('{any?}', function () {
         return response('', 200);
     })->where('any', '.*');
@@ -80,20 +80,21 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('activities/list', 'ActivitiesController@manageList');
     Route::get('next/activities/{timestamp}', 'ActivitiesController@nextSiteActivities')->where('timestamp', '[0-9]+');
 
-    Route::get('my/profile', 'ProfileController@changeInfoForm');
-    Route::get('my/password', 'ProfileController@changePasswordForm');
-    Route::get('logout', 'ProfileController@logoutForm');  
+    Route::get('my/profile', 'ProfileController@updateInfoForm');
+    Route::get('my/password', 'ProfileController@updatePasswordForm');
+    Route::post('finalize/update/my/profile', 'ProfileController@updateInfo');
+    Route::post('finalize/update/my/password', 'ProfileController@updatePassword');
   
     Route::get('dialogs/edit/account/info/{accountID}', 'AccountController@infoUpdateForm')->where('accountID', '[0-9]+');
     Route::get('dialogs/edit/account/password/{accountID}', 'AccountController@passwordUpdateForm')->where('accountID', '[0-9]+');
     Route::get('dialogs/edit/account/permission/{accountID}', 'AccountController@permissionUpdateForm')->where('accountID', '[0-9]+');
+    Route::post('finalize/update/account/info', 'AccountController@updateInfo');
+    Route::post('finalize/update/account/password', 'AccountController@updatePassword');
+    Route::post('finalize/update/account/permission', 'AccountController@updatePermission');
 
+    Route::get('logout', 'AuthController@logoutForm');
+    Route::post('finalize/logout', 'AuthController@logout');  
 
-
-
-
-
-    
 
     
 });

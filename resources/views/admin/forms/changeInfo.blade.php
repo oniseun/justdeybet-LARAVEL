@@ -21,33 +21,33 @@
              
               <!-- form -->
 
-              <form class="form-horizontal"  action="/admin/finalize/update/my/info" method="post">
+              <form class="form-horizontal"  action="/admin/finalize/update/my/profile" method="post">
                 @csrf
                 <div class="form-group form-group-lg">
                   <label for="username" class="col-sm-3 control-label">Username</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control input-lg" id="username" name="username" value="{{ $adminInfo->username }}" placeholder="Enter username here...">
+                    <input type="text" class="form-control input-lg" id="username" name="username" value="{{ $userInfo->username }}" placeholder="Enter username here...">
                   </div>
                 </div>
 
                 <div class="form-group form-group-lg">
                   <label for="display_name" class="col-sm-3 control-label">Display Name</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control input-lg" id="display_name" name="display_name" value="{{ $adminInfo->display_name }}" placeholder="Enter display name here...">
+                    <input type="text" class="form-control input-lg" id="display_name" name="display_name" value="{{ $userInfo->display_name }}" placeholder="Enter display name here...">
                   </div>
                 </div>
 
                 <div class="form-group form-group-lg">
                   <label for="email" class="col-sm-3 control-label">Email</label>
                   <div class="col-sm-9">
-                    <input type="email" name="email" value="{{ $adminInfo->email }}" class="form-control input-lg" id="email" placeholder="Enter email here...">
+                    <input type="email" name="email" value="{{ $userInfo->email }}" class="form-control input-lg" id="email" placeholder="Enter email here...">
                   </div>
                 </div>
 
                 <div class="form-group form-group-lg">
                   <label for="shop_name" class="col-sm-3 control-label">Shop name</label>
                   <div class="col-sm-9">
-                    <input type="text" name="shop_name" value="{{ $adminInfo->shop_name }}" class="form-control input-lg" id="shop_name" placeholder="Enter shop name here...">
+                    <input type="text" name="shop_name" value="{{ $userInfo->shop_name }}" class="form-control input-lg" id="shop_name" placeholder="Enter shop name here...">
                   </div>
                 </div>
 
@@ -55,8 +55,8 @@
                   <label for="gender" class="col-sm-3 control-label">Gender</label>
                   <div class="col-sm-9">
                     <select class="form-control input-lg" id="gender" name="gender">
-                      <option value="male" <?=$adminInfo->gender === 'male' ? 'selected="selected"' : ''?>>Male</option>
-                     <option value="female" <?=$adminInfo->gender === 'female' ? 'selected="selected"' : ''?>>Female</option>
+                      <option value="male" <?=$userInfo->gender === 'male' ? 'selected="selected"' : ''?>>Male</option>
+                     <option value="female" <?=$userInfo->gender === 'female' ? 'selected="selected"' : ''?>>Female</option>
 
                     </select>
                   </div>
@@ -66,7 +66,7 @@
                 <div class="form-group form-group-lg">
                   <label for="about" class="col-sm-3 control-label">About you</label>
                   <div class="col-sm-9">
-                    <textarea class="form-control" name="about" rows="4">{{ $adminInfo->about }}</textarea>
+                    <textarea class="form-control" name="about" rows="4">{{ $userInfo->about }}</textarea>
                   </div>
                 </div>
 

@@ -11,7 +11,7 @@
                     <a class="btn btn-default btn-lg" href="/admin/dashboard" role="button">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to dashboard
                     </a>
-                    <a class="btn btn-primary btn-lg" href="/admin/my/info" role="button">Update profile</a>
+                    <a class="btn btn-primary btn-lg" href="/admin/my/profile" role="button">Update profile</a>
                   </p>
               </div>
 

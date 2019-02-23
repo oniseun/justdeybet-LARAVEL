@@ -1,7 +1,7 @@
  
  @extends('master.admin')
 
-@section('title','Susopended Admins ')
+@section('title','Suspended Admins ')
 @section('content')
 
             <div class="jumbotron">

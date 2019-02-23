@@ -6,16 +6,26 @@ use Illuminate\Http\Request;
 use App\Admin;
 use App\Activities;
 use App\Site;
+use App\Auth;
 
 class AdminController extends Controller
 {
     public function addAdminForm()
     {
+        if (!Auth::is_super_admin() ) {
+            return view('admin.404');
+            exit;
+        }
+
         return view('admin.dialogs.addAdmin');
     }
 
     public function confirmReactivationForm($id)
     {
+        if (!Auth::is_super_admin() || !$this->adminExist($id)) {
+            return view('admin.404');
+            exit;
+        }
 
         $adminInfo = Admin::info($id);
 
@@ -24,6 +34,10 @@ class AdminController extends Controller
 
     public function confirmSuspensionForm($id)
     {
+        if (!Auth::is_super_admin() || !$this->adminExist($id)) {
+            return view('admin.404');
+            exit;
+        }
 
         $adminInfo = Admin::info($id);
 
@@ -52,6 +66,16 @@ class AdminController extends Controller
 
     public function addAdmin()
     {
+        if (!Auth::is_super_admin()) {
+            echo ajax_alert('warning', 'YOu are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Admin::$addAdminFillable)) {
+            echo ajax_alert('warning', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
         if (Admin::add()){
             $input = \Request::only(Admin::$addAdminFillable);
             Activities::update_account_log(Auth::currentUser(), 'admin_add', "Added {$input['display_name']} to admin list");
@@ -63,6 +87,20 @@ class AdminController extends Controller
 
     public function suspendAdmin()
     {
+        if (!Auth::is_super_admin()) {
+            return back()->with('failure', 'YOu are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Admin::$suspendReactivateAdminFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+        if (!$this->adminExist(\Request::only(Admin::$suspendReactivateAdminFillable)['admin_id'])) {
+            return back()->with('failure', 'Admin does not exist');
+            exit;
+        }
+
         if (Admin::suspend()) {
             $input = \Request::only(Admin::$suspendReactivateAdminFillable);
             $adminInfo = Admin::info($input['admin_id']);
@@ -77,6 +115,22 @@ class AdminController extends Controller
 
     public function reactivateAdmin()
     {
+        if (!Auth::is_super_admin()) {
+            return back()->with('failure', 'YOu are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Admin::$suspendReactivateAdminFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if(!$this->adminExist(\Request::only(Admin::$suspendReactivateAdminFillable)['admin_id']))
+        {
+            return back()->with('failure', 'Admin does not exist');
+            exit;
+        }
+
         if (Admin::reactivate()) {
             $input = \Request::only(Admin::$suspendReactivateAdminFillable);
             $adminInfo = Admin::info($input['admin_id']);
@@ -89,6 +143,10 @@ class AdminController extends Controller
         }
     }
 
+    private function adminExist($adminID)
+    {
+        return \DB::table('accounts')->where('ID', $adminID)->where('user_type','admin')->exists();
+    }
     
 
 

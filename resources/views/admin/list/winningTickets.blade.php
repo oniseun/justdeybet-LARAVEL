@@ -61,7 +61,7 @@
 
                                       <li><a href="/admin/payout/ticket/{{ $ticketInfo->ticket_id }}">Pay-out Ticket</a></li>
                                       <li><a  href="/admin/ticket/{{ $ticketInfo->ticket_id }}" >Ticket info</a></li>
-                                      <li><a  href="/admin/cancel/ticket/{{ $ticketInfo->ticket_id }}" >Cancel info</a></li>
+                                      <li><a  href="/admin/cancel/ticket/{{ $ticketInfo->ticket_id }}" >Cancel Ticket</a></li>
                                     </ul>
                                 </div>
                           </td>

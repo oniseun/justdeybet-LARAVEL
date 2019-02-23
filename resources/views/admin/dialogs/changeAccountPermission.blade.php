@@ -15,7 +15,7 @@
 
                 <form class="form-horizontal"  action="/admin/finalize/update/account/permission" method="post">
                     @csrf
-                  <input type="hidden" name="admin_id" value="{{ $accountInfo->ID }}"/>
+                  <input type="hidden" name="account_id" value="{{ $accountInfo->ID }}"/>
                   <h1 class="text-center">{{ $accountInfo->display_name }} <small> {{ $accountInfo->user_type }} </small></h1>
                   <hr/>
                   <div class="form-group">

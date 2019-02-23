@@ -17,7 +17,7 @@
 
               <!-- form -->
 
-              <form class="form-horizontal"  action="/finalize/contact/us" method="post">
+              <form class="form-horizontal"  action="/finalize/contact" method="post">
 
                 @csrf
                 <div class="form-group form-group-lg">
@@ -48,7 +48,7 @@
 
                 <div class="form-group form-group-lg">
                   <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-primary btn-lg ajax-submit">Submit form</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Submit form</button>
                   </div>
                 </div>
 

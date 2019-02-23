@@ -13,9 +13,6 @@ class Admin extends Model
 
 
 
-    $updateProfileFillable = [ 'gender' , 'username', 'email' ,'shop_name', 'about',  'display_name'  ],
-
-    $changePasswordFillable = ['new_password'],
 
     $suspendReactivateAdminFillable = ['admin_id'] ;
 
@@ -29,11 +26,12 @@ class Admin extends Model
     public static function add()
     {
         $data = \Request::only(self::$addAdminFillable);
-        $defaultPassword = 'jdbPassword#2017';
+        $defaultPassword = 'password';
 
         $data['date_registered'] = now();
         $data['last_activity']  = now();
-        $data['password'] = bycrypt($defaultPassword);
+        $data['password'] = bcrypt($defaultPassword);
+        $data['access_token'] = bcrypt($data['email'] . rand(419, 200) . uniqid() . microtime());
 
         $data['user_type'] = 'admin';
 
@@ -85,27 +83,7 @@ class Admin extends Model
 
 
 
-    public static function update_password($adminID)
-    {
-        $data = \Request::only(self::$changePasswordFillable);
-
-        $data['new_password'] = bycrypt($data['new_password']);
-
-        $data['last_activity'] = now();
-
-        return \DB::table('accounts')->where('ID', $adminID)->update($data);
-    }
-
-
-
-    public static function update_profile($adminID)
-    {
-        $data = \Request::only(self::$updateProfileFillable);
-
-        $data['last_activity'] = now();
-
-        return \DB::table('accounts')->where('ID', $adminID)->update($data);
-    }
+  
 
 
     # [ site info ]

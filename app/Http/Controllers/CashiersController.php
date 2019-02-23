@@ -12,11 +12,20 @@ class CashiersController extends Controller
 {
     public function addCashierForm()
     {
+        if (!Auth::is_super_admin()) {
+            return view('admin.404');
+            exit;
+        }
+
         return view('admin.dialogs.addCashier');
     }
 
     public function confirmReactivationForm($id)
     {
+        if (!Auth::is_super_admin() || !$this->cashierExist($id)) {
+            return view('admin.404');
+            exit;
+        }
 
         $cashierInfo = Cashiers::info($id);
 
@@ -25,6 +34,10 @@ class CashiersController extends Controller
 
     public function confirmSuspensionForm($id)
     {
+        if (!Auth::is_super_admin() || !$this->cashierExist($id)) {
+            return view('admin.404');
+            exit;
+        }
 
         $cashierInfo = Cashiers::info($id);
 
@@ -51,6 +64,17 @@ class CashiersController extends Controller
 
     public function addCashier()
     {
+
+        if (!Auth::is_super_admin()) {
+            echo ajax_alert('warning', 'YOu are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Cashiers::$addCashierFillable)) {
+            echo ajax_alert('warning', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
         if (Cashiers::add()) {
             $input = \Request::only(Cashiers::$addCashierFillable);
             Activities::update_account_log(Auth::currentUser(), 'cashier_add', "Added {$input['display_name']} to Cashier list");
@@ -62,12 +86,27 @@ class CashiersController extends Controller
 
     public function suspendCashier()
     {
+        if (!Auth::is_super_admin()) {
+            return back()->with('failure', 'You are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Cashiers::$suspendReactivateCashierFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if (!$this->cashierExist(\Request::only(Cashiers::$suspendReactivateCashierFillable)['cashier_id'])) {
+            return back()->with('failure', 'Cashier does not exist');
+            exit;
+        }
+
         if (Cashiers::suspend()) {
             $input = \Request::only(Cashiers::$suspendReactivateCashierFillable);
             $cashierInfo = Cashiers::info($input['cashier_id']);
             $mainMSG = "Successfully suspended {$cashierInfo->display_name} ";
             Activities::update_account_log(Auth::currentUser(), 'cashier_suspension', $mainMSG);
-            return redirect('/cashiers/suspended')->with('success', $mainMSG);
+            return redirect('/admin/cashiers/suspended')->with('success', $mainMSG);
 
         } else {
             return back()->with('failure', 'Sorry an error occured, Please try again');
@@ -76,16 +115,36 @@ class CashiersController extends Controller
 
     public function reactivateCashier()
     {
+        if (!Auth::is_super_admin()) {
+            return back()->with('failure', 'You are not authorized');
+            exit;
+        }
+
+        if (!\Request::has(Cashiers::$suspendReactivateCashierFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if (!$this->cashierExist(\Request::only(Cashiers::$suspendReactivateCashierFillable)['cashier_id'])) {
+            return back()->with('failure', 'Cashier does not exist');
+            exit;
+        }
+
         if (Cashiers::reactivate()) {
             $input = \Request::only(Cashiers::$suspendReactivateCashierFillable);
             $cashierInfo = Cashiers::info($input['cashier_id']);
             $mainMSG = "Successfully reactivated {$cashierInfo->display_name} ";
             Activities::update_account_log(Auth::currentUser(), 'cashier_reactivation', $mainMSG);
-            return redirect('/cashiers/list')->with('success', $mainMSG);
+            return redirect('/admin/cashiers/list')->with('success', $mainMSG);
 
         } else {
             return back()->with('failure', 'Sorry an error occured, Please try again');
         }
+    }
+
+    private function cashierExist($cashierID)
+    {
+        return \DB::table('accounts')->where('ID', $cashierID)->where('user_type', 'cashier')->exists();
     }
 
 }

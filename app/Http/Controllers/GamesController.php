@@ -13,6 +13,11 @@ class GamesController extends Controller
 {
     public function addGameForm()
     {
+        if (!Auth::is_super_admin() && !Auth::can('add_games')) {
+            return back()->with('failure', "You are not authorized to perform this action");
+            exit;
+        }
+
         return view('admin.dialogs.addGame');
     }
     
@@ -28,6 +33,16 @@ class GamesController extends Controller
 
     public function confirmRemoveGameForm($game_id)
     {
+        if (!Auth::is_super_admin() && (!Auth::can('remove_games') || !$this->isCreator($game_id))) {
+            return view('admin.404');
+            exit;
+        }
+
+        if (!$this->gameExist($game_id)) {
+            return view('admin.404');
+            exit;
+        }
+
 
         $gameInfo = Games::info($game_id);
 
@@ -36,6 +51,15 @@ class GamesController extends Controller
 
     public function updateScoreForm($game_id)
     {
+        if (!$this->gameExist($game_id)) {
+            return view('admin.404');
+            exit;
+        }
+
+        if (!Auth::is_super_admin() && (!Auth::can('remove_games') || !$this->isCreator($game_id))) {
+            return view('admin.404');
+            exit;
+        }
 
         $gameInfo = Games::info($game_id);
 
@@ -45,11 +69,15 @@ class GamesController extends Controller
     public function playGameForm()
     {
 
+        if (!Auth::is_super_admin() && !Auth::can('play_games')) {
+            return view('admin.404');
+            exit;
+        }
+
         $char_limit = 8;
         $ticketID = strtoupper(substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $char_limit));
         $serialNumber = rand(4566, 7665) . rand(5556, 9999) . rand(4889, 9999);
 
-      
 
         $games = \Request::input('games');
         //print_r($allGames);
@@ -62,6 +90,16 @@ class GamesController extends Controller
 
     public function addGame()
     {
+        if (!\Request::has(Games::$addUpdateGameFillable)) {
+            echo ajax_alert('warning', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if (!Auth::is_super_admin() && !Auth::can('add_games')) {
+            echo ajax_alert('warning', "You are not authorized to perform this action");
+            exit;
+        }
+
         if(Games::add(Auth::id()))
         {
             $input = \Request::only(Games::$addUpdateGameFillable);
@@ -75,6 +113,17 @@ class GamesController extends Controller
 
     public function playGame()
     {
+        if (!\Request::has(Games::$playGameFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if(!Auth::is_super_admin() && !Auth::can('play_games'))
+        {
+            return back()->with('failure', "You are not authorized to perform this action");
+            exit;
+        }
+
         if (Games::play(Auth::id())) {
             $inputGames = \Request::only(Games::$playGameFillable);
             $gamesCount = count($inputGames['games']);
@@ -91,6 +140,20 @@ class GamesController extends Controller
 
     public function removeGame()
     {
+        if (!\Request::has(Games::$removeGameFillable)) {
+            return back()->with('failure', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+        if (!$this->gameExist(\Request::only(Games::$removeGameFillable)['game_id'])) {
+            return back()->with('failure', "Item Does not exist");
+            exit;
+        }
+
+        if (!Auth::is_super_admin() && (!Auth::can('remove_games') || !$this->isCreator(\Request::only(Games::$removeGameFillable)['game_id']))) {
+            return back()->with('failure', "You are not authorized to perform this action");
+            exit;
+        }
+
         if (Games::remove()){
             $input = \Request::only(Games::$removeGameFillable);
             $gameInfo = Games::info($input['game_id']);
@@ -106,17 +169,41 @@ class GamesController extends Controller
 
     public function updateGameScore()
     {
+        if (!\Request::has(Games::$updateScoresFillable)) {
+            echo ajax_alert('warning', "Error in your form fields, please check, make corrections and submit again");
+            exit;
+        }
+
+        if (!$this->gameExist(\Request::only(Games::$updateScoresFillable)['game_id'])) {
+            echo ajax_alert('warning', "Item Does not exist");
+            exit;
+        }
+
+        if (!Auth::is_super_admin() && (!Auth::can('update_scores') || $this->isCreator(\Request::only(Games::$updateScoresFillable)['game_id']))) {
+       
+            return back()->with('failure', "You are not authorized to perform this action");
+            exit;
+        }
+
         if (Games::update_score()) {
             $input = \Request::only(Games::$updateScoresFillable);
             $gameInfo = Games::info($input['game_id']);
             Activities::update_account_log(Auth::currentUser(), 'game_scores_update', "Successfully updated game scores :{$gameInfo->home_team} v {$gameInfo->away_team} ");
             echo ajax_alert('success', "Successfully updated scores  {$input['home_score']} - {$input['away_score']}");
-          
-
 
         } else {
             echo ajax_alert('warning', 'Sorry an error occured');
         }
+    }
+
+    private function gameExist($game_id)
+    {
+        return \DB::table('games')->where('game_id', $game_id)->where('deleted','no')->exists();
+    }
+
+    private function isCreator($game_id)
+    {
+        return \DB::table('games')->where('game_id', $game_id)->where('creator_id', Auth::id())->exists();
     }
 
 

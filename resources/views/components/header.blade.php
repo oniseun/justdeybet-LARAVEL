@@ -79,7 +79,7 @@ $currentUser = Auth::currentUser();
                 <li class="<?=mark_link('admin/my/profile')?>"><a href="/admin/my/profile">Edit Profile</a></li>
                 <li class="<?=mark_link('admin/my/password')?>"><a href="/admin/my/password">Change Password</a></li>
                 <li class="<?=mark_link('admin/logout')?>"><a href="/admin/logout">Logout</a></li>
-                <li><a target="_blank" href="/">Open Homepage</a></li>
+                <li><a target="_blank" href="/home">Open Homepage</a></li>
               </ul>
             </li>
           </ul>

@@ -22,11 +22,13 @@ class Cashiers extends Model
     public static function add()
     {
         $data = \Request::only(self::$addCashierFillable);
-        $defaultPassword = 'jdbPassword#2017';
+        $defaultPassword = 'password';
 
         $data['date_registered'] = now();
         $data['last_activity']  = now();
-        $data['password'] = bycrypt($defaultPassword);
+        $data['password'] = bcrypt($defaultPassword);
+        $data['access_token'] =  bcrypt($data['email'] . rand(419, 200) . uniqid() . microtime());
+
 
         $data['user_type'] = 'cashier';
 

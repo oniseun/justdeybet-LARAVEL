@@ -12,7 +12,7 @@
                 <div class="panel-heading"><b>Re-activate Cashier? </b></div>
                 <div class="panel-body">
 
-                  <form class="text-center"  action="/admin/finalize/reactivate/admin" method="post">
+                  <form class="text-center"  action="/admin/finalize/reactivate/cashier" method="post">
                    @csrf
                     <input type="hidden" name="cashier_id" value="{{ $cashierInfo->ID }}"/>
                     <p>

@@ -9,7 +9,17 @@
 
 @include('components.cssList')
 
-@if(session('failure'))
+
+
+<style>
+
+</style>
+</head>
+<body class="">
+
+
+    <div class="container">
+        @if(session('failure'))
     <p>
      {!! ajax_alert('danger',session('failure')) !!}
     </p>
@@ -21,15 +31,6 @@
     {!! ajax_alert('success',session('success')) !!}
     </p>
 @endif
-
-<style>
-
-</style>
-</head>
-<body class="">
-
-
-    <div class="container">
                 
                   <br/>
                   @yield('content')
