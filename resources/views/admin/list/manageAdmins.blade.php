@@ -22,7 +22,7 @@
               <div class="panel-body">
 
                 
-                @if(count($siteInfo->admin_count) < 1)
+                @if($siteInfo->admin_count < 1)
                   
                  <h1>No record found</h1>
                   

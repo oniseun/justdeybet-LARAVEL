@@ -21,7 +21,7 @@
               <div class="panel-heading">Suspended Admin list (<b> {{ number_format($siteInfo->suspended_admin_count) }}</b>) </div>
               <div class="panel-body">
 
-                @if(count($siteInfo->suspended_admin_count) < 1)
+                @if($siteInfo->suspended_admin_count < 1)
                   
                  <h1>No record found</h1>
                   

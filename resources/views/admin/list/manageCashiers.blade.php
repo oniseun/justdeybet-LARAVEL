@@ -21,7 +21,7 @@
               <div class="panel-heading">Cashier list (<b> {{ number_format($siteInfo->cashier_count) }}</b>) </div>
               <div class="panel-body">
 
-                @if(count($siteInfo->cashier_count) < 1)
+                @if($siteInfo->cashier_count < 1)
                   
                  <h1>No record found</h1>
                   
