@@ -1,69 +1,31 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+<p align="center"><h1> JustDeybet </h1></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+## About Justdeybet
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Justdeybet is a kiosk betting administration platform
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Feature Summary
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+Below is a summary of app features
 
-## Learning Laravel
+- Auth - login and signup with Email enabled
+- Add Cashiers and Admins
+- Add Games to be played 
+- Stake Games
+- Create Tickets
+- Admin Permission Modules
+- Payout Tickets
+- Cancel Tickets
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+## How It Works (in kiosk)
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+- 1. If you predict SCORE MARGIN right, you score 1 point. For example, if you predict Chelsea [1] – Fulham [0] and the match ends Chelsea [4] – Fulham [3] or Chelsea [2] – Fulham [1], you will still get 1 point as the goal margin still remains the same [1]. 
+Another example; If you predict Arsenal 1 – 1 Norwich and the match ends Arsenal 3 – 3 Norwich, you will still score 1 point. 
+Please note that if the margin is not in the exact format you predicted it, you will not earn any points. For example, if the match ends with Chelsea [0] – Fulham [1], even though the margin is still 1, but margin is in favour of Fulham, not Chelsea, so you will not earn any points. 
 
-## Laravel Sponsors
+- 2. If you predict the RESULT [Win, draw, and lose] of the game right, you get 1 point. 
+For example, if you predict Arsenal [3] - Crystal Palace [0] and the game ends with Arsenal [2] - Crystal Palace [0], you will be awarded 1 point because Arsenal still won [A win is a win, a draw is a draw, a loss is a loss, whatever the score line is]. 
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- 3. If you predict the SCORELINE right, you earn maximum 5 points. 
+For example, if you predict Man United [1] – West Brom [0] and the match ends with the exact same score , you earn 5 points. Another example is if you predict Chelsea [2] vs Sunderland [4] and the match ends with Chelsea [2] vs Sunderland [4], you will score 5 points. 
